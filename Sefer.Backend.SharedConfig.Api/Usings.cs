@@ -1,0 +1,13 @@
+global using Sefer.Backend.SharedConfig.Api.Endpoints;
+global using Microsoft.AspNetCore.Mvc;
+global using Sefer.Backend.SharedConfig.Api.Models;
+global using Sefer.Backend.SharedConfig.Api.Services;
+global using Sefer.Backend.GeoIP.Lib;
+global using Sefer.Backend.Support.Lib;
+global using Microsoft.AspNetCore.Http;
+global using System.Web;
+global using Sefer.Backend.SharedConfig.Api;
+global using Sefer.Backend.SharedConfig.Lib;
+global using Sefer.Backend.SharedConfig.Lib.Abstractions;
+global using System.Text.Json.Serialization;
+global using Sefer.Backend.Support.Lib.Cors;
