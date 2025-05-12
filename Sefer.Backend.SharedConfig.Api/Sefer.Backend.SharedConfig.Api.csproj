@@ -10,7 +10,7 @@
     <Version>1.2.0</Version>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Sefer.Backend.SharedConfig.Lib" Version="1.0.0" />
+    <PackageReference Include="Sefer.Backend.SharedConfig.Lib" Version="1.2.0" />
     <PackageReference Include="Sefer.Backend.Authentication.Lib" Version="1.1.9" />
     <PackageReference Include="Sefer.Backend.GeoIP.Lib" Version="1.1.9" />
     <PackageReference Include="Sefer.Backend.Support.Lib" Version="1.1.0" />
