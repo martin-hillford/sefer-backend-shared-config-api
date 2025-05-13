@@ -6,10 +6,11 @@ COPY . ./
 # Restore as distinct layers
 RUN dotnet restore
 # Build and publish a release
-RUN dotnet publish -o out
+RUN dotnet publish Sefer.Backend.SharedConfig.Api.csproj -o out
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine@sha256:91106a05a57b3ef509919d0d61206317f63d27b23b666d38668b14ba8485975c
 WORKDIR /App
 COPY --from=build /App/out .
-ENTRYPOINT ["dotnet", "Sefer.Backend.SharedConfig.dll"]
+EXPOSE 8080
+ENTRYPOINT ["dotnet", "Sefer.Backend.SharedConfig.Api.dll"]
