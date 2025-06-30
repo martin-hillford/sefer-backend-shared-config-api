@@ -1,43 +1,45 @@
 // Create the app and map the requests
 var app = App.Create(args);
 
-// Map a get that returns the config for the given host or not found when hostname
-// is not found or the site is a redirect
+// Returns the frontend config for the given hostname
+// If the hostname is not is a redirect is returned to the default site
+// Frontend that what to proxy the config.json can use this endpoint
 app.MapGet("/{hostname}/config.json",
     (IServiceProvider provider, HttpRequest request, [FromRoute] string hostname)
         => FrontendConfigEndpoint.Get(provider, request, hostname)
 );
 
-// For proxy purposes, the hostname is provided through and header that is
-// set by the reverse proxy within the client
+// Returns the frontend config for the hostname is provided through a header that is
+// set by the reverse proxy or within the client
 app.MapGet("/config.json",
     (IServiceProvider provider, HttpRequest request)
         => FrontendConfigEndpoint.Get(provider, request)
 );
 
-// Map a get that will purge the data context cache
-app.MapGet("/api/purge-cache", PurgeCacheEndpoint.PurgeCache);
+// Purges the data context cache
+app.MapGet("/data/purge-cache", PurgeCacheEndpoint.PurgeCache);
 
-// Map a get that will handle all other requests. Depending on the hostname a
-// redirect to a site will be provided or a 404 will be given.
-app.MapGet("{**catchall}", RedirectEndpoint.Get);
+// Provides health information on this sever (useful for watchdogs)
+app.MapGet("/health", () => Results.Ok());
 
-// A Simple endpoint so the endpoint may be inspected on health
-app.MapGet("/api/health", () => Results.Ok());
+// Retrieve all production sites
+app.MapGet("/data/sites", DataEndpoint.GetSitesAsync);
 
-// Map a get to retrieve all production sites
-app.MapGet("/api/sites", DataEndpoint.GetSitesAsync);
+// Retrieve all regions
+app.MapGet("/data/regions", DataEndpoint.GetRegionsAsync);
 
-// Map a get to retrieve all regions
-app.MapGet("/api/regions", DataEndpoint.GetRegionsAsync);
+// Retrieve some information
+app.MapGet("/data/info", InfoEndpoint.Get);
 
-// Map a get to retrieve some information
-app.MapGet("/api/info", InfoEndpoint.Get);
-
+// Map the admin config 
 app.MapGet("/admin/{hostname}/config.json",
     (INetworkProvider provider, [FromRoute] string hostname)
         => AdminConfigEndpoint.Get(provider, hostname)
 );
+
+// Map a get that will handle all other requests. Depending on the hostname a
+// redirect to a site will be provided or a 404 will be given.
+app.MapGet("{**catchall}", RedirectEndpoint.Get);
 
 // Run the app
 app.Run();
